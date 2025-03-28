@@ -1,0 +1,61 @@
+<div class="container-sm bg-danger sticky-top my-3 py-2 justify-content-center" id="alert-failure">
+   <h3 class="text-center">Account could not be created. The account may already exist or there was a server error.</h3>
+</div>
+
+<div class="container-sm bg-success sticky-top my-3 py-2 justify-content-center" id="alert-success">
+   <h3 class="text-center">Account was Successfully created. Redirecting to login!</h3>
+</div>
+
+
+<main class="container-md my-4 d-flex justify-content-center">
+    <form class="d-flex flex-column" id="login-form">
+         <div class="mb-3">
+            <label for="" class="form-label">Email</label>
+            <input 
+            type="email" 
+            class="form-control text-dark" 
+            name="email" 
+            id="email" 
+            aria-describedby="emailHelpId" 
+            placeholder="Enter Email" 
+            required
+            />
+         </div>
+         <div class="mb-3">
+            <label for="" class="form-label">Password</label>
+            <input
+                type="password"
+                class="form-control text-dark"
+                name="password"
+                id="password"
+                placeholder="Enter Password"
+                pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                title="please enter atleast 8 characters containing 1 digit, 1 upper case and 1 lower case"
+                required
+            />
+         </div>
+         <div class="mb-3">
+            <label for="" class="form-label">Repeat Password</label>
+            <input
+                type="password"
+                class="form-control text-dark"
+                id="password2"
+                placeholder="Enter Password Again"
+                pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                title="please enter atleast 8 characters containing 1 digit, 1 upper case and 1 lower case"
+                required
+            />
+         </div>
+         <button
+            type="submit"
+            class="btn btn-secondary"
+            id="submit"
+         >
+            Submit
+         </button>
+         <h5 class="my-4"><a href="./login">Already have an account? Click here to login!</a></h5>
+
+    </form>
+</main>
+
+<script src="./assets/scripts/new-account-script.js"></script>

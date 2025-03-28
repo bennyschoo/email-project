@@ -1,0 +1,58 @@
+#email-icon{
+    width:60px;
+}
+#email-icon-footer{
+    width:30px;
+}
+#home-button{
+    color:rgb(241, 241, 241)
+}
+
+#home-button:hover{
+    color:rgb(160, 160, 180);
+}
+
+#email-form-container{
+    border-radius: 15px;
+}
+
+#mail-form{
+    max-width: 700px;
+}
+
+form, input, textarea{
+    color: white !important;
+}
+
+#send-img-icon{
+    width:30px;
+}
+
+#message-body{
+    resize: none;
+}
+
+#alert-success, #alert-failure{
+    border-radius: 10px;
+    max-width: 450px;
+}
+
+#emails-container{
+    border-radius: 13px;
+}
+
+.email-drop-button:hover{
+    cursor: pointer;
+}
+
+
+.email-contents-box{
+    height: 0;
+    transition: height 0.4s;
+    overflow: hidden;
+}
+
+.email-show{
+    height: auto;
+    height: calc-size(auto);
+}

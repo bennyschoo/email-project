@@ -1,0 +1,4 @@
+{
+    "watch": ["./", "./templates/.","./styles/.","./scripts/."],
+    "ext": "js, css, html"
+}

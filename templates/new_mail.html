@@ -1,0 +1,62 @@
+<div class="container-sm bg-danger sticky-top my-3 py-2 justify-content-center" id="alert-failure">
+    <h3 class="text-center">Message was not successfully sent. Recipient most likely doesn't exist.</h3>
+</div>
+
+<div class="container-sm bg-success sticky-top my-3 py-2 justify-content-center" id="alert-success">
+    <h3 class="text-center">Message was successfully sent! Redirecting.</h3>
+</div>
+
+
+<main class="container-sm">
+
+    <a class="btn btn-secondary mt-4" href="./inbox">Back to Inbox                
+        <img alt="send message icon" src="./assets/img/back-icon.png" id="send-img-icon" class="ms-2 mb-1">
+    </a>
+
+    <div>
+        <div class="container-fluid bg-secondary mb-5 mt-2" id="email-form-container">
+            <form id="mail-form" class="p-3 my-3">
+                <label for="recipient" class="form-label">Recipient</label>
+                <div class="mb-3">
+                    <input
+                        type="email"
+                        class="form-control  border-0 border-bottom rounded-0 bg-transparent"
+                        name="recipient"
+                        id="recipient-box"
+                        placeholder="Recipient"
+                        required
+                    />
+                </div>
+
+                <label for="subject" class="form-label">Subject</label>
+                <div class="mb-3">
+                    <input
+                        type="text"
+                        class="form-control border-0 border-bottom rounded-0 bg-transparent"
+                        name="subject"
+                        id="subject-box"
+                        placeholder="Subject"
+                        required
+                    />
+                </div>
+
+                <div class="mb-3">
+                    <label for="body" class="form-label"></label>
+                    <textarea class="form-control bg-transparent" name="body" id="message-body" rows="15" required></textarea>
+                </div>
+                
+                <button
+                    type="submit"
+                    class="btn btn-light"
+                >
+                    Send
+                    <img alt="send message icon" src="./assets/img/send-icon.png" id="send-img-icon" class="ms-2 mb-1">
+                </button>
+                
+                
+            </form>
+        </div>
+    </div>
+</main>
+
+<script src="./assets/scripts/new-mail-script.js"></script>
