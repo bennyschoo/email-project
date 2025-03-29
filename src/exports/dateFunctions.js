@@ -13,7 +13,10 @@ module.exports.formatTime = (date) => {
     const _date = new Date(date);
     const hours = _date.getHours()
     const minutes = _date.getMinutes();
-    const seconds = _date.getSeconds();
+    let seconds = _date.getSeconds();
+    if(seconds < 10) {
+        seconds = `0${seconds}`;
+    }
     return `${hours}:${minutes}:${seconds}`;
 }
 

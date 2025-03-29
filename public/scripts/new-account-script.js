@@ -27,7 +27,7 @@ form.addEventListener("submit", (event)=>{
 });
 
 async function sendData(data){
-    const res = await fetch("./new_account", {
+    const res = await fetch("/api/new_account", {
         "method":"POST",
         "body": data
     });
@@ -36,7 +36,7 @@ async function sendData(data){
         success.classList.add(["d-flex"]);
 
         setTimeout(()=>{
-            window.location="./login";
+            window.location="/login";
         },1500)
     }
     else{

@@ -19,7 +19,7 @@ form.addEventListener("submit", (event)=>{
 });
 
 async function login(data){
-    const res = await fetch("./request_login", {
+    const res = await fetch("/api/request_login", {
         "method":"POST",
         "body": data
     });
@@ -28,7 +28,7 @@ async function login(data){
         success.classList.add(["d-flex"]);
 
         setTimeout(()=>{
-        window.location="./inbox";
+        window.location="/inbox";
         },800);
     }
     else{

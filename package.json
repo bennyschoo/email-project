@@ -2,9 +2,9 @@
   "name": "assignment4",
   "version": "1.0.0",
   "description": "This is my website for 2170 assignment 4, made by Ben Schoonhoven",
-  "main": "server.js",
+  "main": "app.js",
   "scripts": {
-    "test": "server.js",
+    "test": "app.js",
     "start": "nodemon"
   },
   "repository": {

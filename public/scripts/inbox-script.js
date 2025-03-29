@@ -1,5 +1,7 @@
 const emailsContainer = document.getElementById("emails-container");
 let emailData = [];
+var updateInbox;
+const inboxButton = document.getElementById("toggle-inbox");
 
 function updateLastLogin(){
     let cookies=document.cookie.split(";");
@@ -10,7 +12,7 @@ function updateLastLogin(){
         }
     }
     if(lastLogin==""){
-        return;
+        lastLogin="Never";
     }
     lastLogin = decodeURIComponent(lastLogin);
     let lastlogElement = document.getElementById("last-login");
@@ -18,27 +20,17 @@ function updateLastLogin(){
 }
 
 async function fetchAllEmails(){
-    const res = await fetch("./retrieve", {"method":"POST", 'body':'{"time":"0"}'});
+    const res = await fetch("/api/retrieve", {"method":"POST", 'body':'{"time":"0", "type":"incoming"}'});
     const data = await res.json();
     emailData = data;
 
 
-
-    if(data.length==0){
-        let noEmails = document.createElement("h4");
-        noEmails.classList = "text-center py-3";
-        noEmails.textContent = "Inbox Empty";
-        emailsContainer.appendChild(noEmails);
-    }
-    for(let i=0; i<data.length; i++){
-        let emailElement = createMailItem(data[i]);
-        emailsContainer.appendChild(emailElement);
-    };
-
+    loadInbox(data, "From");
+    updateInbox = setInterval(fetchNewMail,1000*3);
 }
 
 
-function createMailItem(data){
+function createMailItem(data, fromTo){
     let emailContainer = document.createElement("div");
     emailContainer.classList = "border-bottom border-light";
 
@@ -50,7 +42,7 @@ function createMailItem(data){
 
                 let caret = document.createElement("img");
                 caret.setAttribute("alt","caret indicting email content dropdown");
-                caret.setAttribute("src", "./assets/svg/caret-down.svg");
+                caret.setAttribute("src", "/public/svg/caret-down.svg");
                 caret.classList = "my-auto me-3";
                 caret.setAttribute("height","25");
                 caret.setAttribute("width","25");
@@ -67,7 +59,7 @@ function createMailItem(data){
 
                 let sender = document.createElement("h5");
                 sender.classList="text-center my-auto";
-                sender.textContent = "From: " + data.email;
+                sender.textContent = fromTo + ": " + data.email;
 
                 let datetime = document.createElement("h6");
                 datetime.classList = "text-center my-auto";
@@ -99,11 +91,11 @@ function createMailItem(data){
 
 function toggleEmail(caret,contentBox){
 if(caret.src.includes("down")){
-    caret.src = "./assets/svg/caret-up.svg";
+    caret.src = "/public/svg/caret-up.svg";
     contentBox.classList.add("email-show");
 }
 else if(caret.src.includes("up")){
-    caret.src = "./assets/svg/caret-down.svg";
+    caret.src = "/public/svg/caret-down.svg";
     contentBox.classList.remove("email-show");
 }
 }
@@ -113,10 +105,8 @@ async function fetchNewMail(){
     if(emailData.length!=0){
         newestTime = emailData[0].sent;
     }
-    console.log(newestTime);
-    const res = await fetch("./retrieve",{"method":"POST", "body":`{"time":"${newestTime}"}`});
+    const res = await fetch("/api/retrieve",{"method":"POST", "body":`{"time":"${newestTime}", "type":"incoming"}`});
     const data = await res.json();
-    console.log(data);
     if(data.length==0){
         return;
     }
@@ -126,11 +116,61 @@ async function fetchNewMail(){
     emailData = data.concat(emailData);
 
     for(let i=data.length-1; i>=0; i--){
-        let emailElement = createMailItem(data[i]);
+        let emailElement = createMailItem(data[i], "From");
         emailsContainer.insertBefore(emailElement,emailsContainer.children[0]);
     }
 }
 
+async function toggleInbox(){
+    if(inboxButton.children[0].textContent.includes("Sent")){
+        clearInterval(updateInbox);
+        inboxButton.children[0].textContent = "View Inbox";
+        let res = await fetch("/api/retrieve",{"method":"POST", "body":`{"time":"0", "type":"outgoing"}`});
+        const data = await res.json();
+        
+        loadInbox(data, "To");
+      
+    }
+    else if(inboxButton.children[0].textContent.includes("Inbox")){
+        inboxButton.children[0].textContent = "View Sent";
+        loadInbox(emailData, "From");
+        updateInbox = setInterval(fetchNewMail,1000*3);
+
+    }
+    
+}
+
+function createNoMailMessage(){
+    let noEmails = document.createElement("h4");
+    noEmails.classList = "text-center py-3";
+    noEmails.textContent = "No Emails Found";
+    return noEmails;
+}
+
+function loadInbox(data, fromTo){
+    emailsContainer.innerHTML = "";
+
+    if(data.length==0){
+        let noEmails = createNoMailMessage();
+        emailsContainer.appendChild(noEmails);
+    }
+
+    for(let i=0; i<data.length; i++){
+        let emailElement = createMailItem(data[i], fromTo);
+        emailsContainer.appendChild(emailElement);
+    }
+}
+
+
+
 updateLastLogin();
 fetchAllEmails();
-setInterval(fetchNewMail,1000*3);
+inboxButton.addEventListener("click", toggleInbox);
+document.getElementById("logout-button").addEventListener("click", (event)=>{
+    event.preventDefault();
+    fetch("/api/logout",{"method":"POST"}).then((res)=>{
+        if(res.status==200){
+            window.location.href = "/login";
+        }
+    });
+});

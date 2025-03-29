@@ -3,11 +3,15 @@
         <h2 class="text-center mt-2">!--HELLO--!</h2>
         <h6 class="text-center mt-2" id="last-login">Last Login: </h6>
         <div class="d-flex justify-content-between">
-            <a class="btn btn-secondary" href="./new-mail">New Mail                
-                <img alt="send message icon" src="./assets/img/send-icon.png" id="send-img-icon" class="ms-2 mb-1">
+            <a class="btn btn-secondary" href="/new-mail">New Mail                
+                <img alt="send message icon" src="/public/img/send-icon.png" id="send-img-icon" class="ms-2 mb-1">
             </a>
-            <a class="btn btn-secondary" href="./logout">Logout               
-                <img alt="send message icon" src="./assets/img/logout-icon.png" id="send-img-icon" class="ms-2 mb-1">
+            <div class="btn btn-secondary"  id="toggle-inbox">
+                <a>View Sent Mail</a>
+                <img alt="send message icon" src="/public/img/send-icon.png" id="send-img-icon" class="ms-2 mb-1">
+            </div>
+            <a class="btn btn-secondary" id="logout-button">Logout               
+                <img alt="send message icon" src="/public/img/logout-icon.png" id="send-img-icon" class="ms-2 mb-1">
             </a>        
         </div>
     </div>
@@ -16,7 +20,7 @@
         <!-- <div class="border-bottom border-light">
             <div class="container-fliud d-flex justify-content-between p-2 email-drop-button">
                 <div class="d-flex">
-                    <img alt="caret indicting email content dropdown" src="./assets/svg/caret-up.svg" width="25" height="25" class="my-auto me-3">
+                    <img alt="caret indicting email content dropdown" src="/public/svg/caret-up.svg" width="25" height="25" class="my-auto me-3">
                     <h4 class="text-center my-auto">Subject</h4>
                 </div>
                 <div class="my-auto">
@@ -31,4 +35,4 @@
     </div>
 </main>     
 
-<script src="./assets/scripts/inbox-script.js"></script>
+<script src="/public/scripts/inbox-script.js"></script>

@@ -24,7 +24,7 @@ form.addEventListener("submit", event=>{
 });
 
 async function sendData(data){
-    const res = await fetch("./sendmail", {
+    const res = await fetch("/api/sendmail", {
         "method":"POST",
         "body": data
     });
@@ -33,7 +33,7 @@ async function sendData(data){
         success.classList.add("d-flex");
 
         setTimeout(()=>{
-            window.location="./inbox";
+            window.location="/inbox";
         },1200);
     }
     else{
