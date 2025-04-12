@@ -27,7 +27,7 @@ router.post("/request_login", [
         db.query(query, [email], (err,results,fields)=>{
             if(err) throw err;
             if(results.length == 0){
-                res.writeHead(404,{"Content-Type":"routerlication/json"});
+                res.writeHead(404,{"Content-Type":"application/json"});
                 res.end(JSON.stringify({"error":"Email not found"}));
                 return;
             }
@@ -39,7 +39,7 @@ router.post("/request_login", [
                 req.session.uid = results[0].uid;
                 req.session.email = email;
                 res.writeHead(200,{
-                    "Content-Type":"routerlication/json",
+                    "Content-Type":"application/json",
                     "Set-Cookie":`last_login=${new Date().toLocaleString()}; path=/;`
                 });
                 res.end(JSON.stringify({"success":"Login Successful"}));
@@ -61,7 +61,7 @@ router.post("/new_account", [
         db.query(query, [email], (err,results,fields)=>{
             if(err) throw err;
             if(results.length >0){
-                res.writeHead(404,{"Content-Type":"routerlication/json"});
+                res.writeHead(404,{"Content-Type":"application/json"});
                 res.end(JSON.stringify({"error":"Email already exists"}));
                 return;
             }
@@ -72,7 +72,7 @@ router.post("/new_account", [
             query = "insert into login (uid,email,password,salt) values (?,?,?,?);"
             db.query(query,[uid,email,hash,salt], (err,results,fields)=>{
                 if(err) throw err;
-                res.writeHead(200,{"Content-Type":"routerlication/json"});
+                res.writeHead(200,{"Content-Type":"application/json"});
                 res.end(JSON.stringify({"success":"Account Created"}));
             });
         });
@@ -107,7 +107,7 @@ router.post("/retrieve", [
                 for(let i=0; i<results.length;i++){
                     results[i].sent = dates.toDateTimestamp(results[i].sent);
                 }
-                res.writeHead(200,{"Content-Type":"routerlication/json"});
+                res.writeHead(200,{"Content-Type":"application/json"});
                 res.end(JSON.stringify(results));
             });
         });
@@ -127,7 +127,7 @@ router.post("/sendmail", [
         db.query(query, [recipient], (err,results,fields)=>{
             if(err) throw err;
             if(results.length == 0){
-                res.writeHead(404,{"Content-Type":"routerlication/json"});
+                res.writeHead(404,{"Content-Type":"application/json"});
                 res.end(JSON.stringify({"error":"Recipient not found"}));
                 return;
             }
@@ -137,7 +137,7 @@ router.post("/sendmail", [
             query = "insert into emails (sid,rid,subject,body,sent) values (?,?,?,?,NOW());"
             db.query(query,[sid,rid,subject,body],(err,results,fields)=>{
                 if(err) throw err;
-                res.writeHead(200,{"Content-Type":"routerlication/json"});
+                res.writeHead(200,{"Content-Type":"application/json"});
                 res.end(JSON.stringify({"success":"Email Sent"}));
             });
         });

@@ -1,7 +1,7 @@
 const db_params = {
-    host: "localhost",
-    user: "root",
-    password: "",
+    host: "192.168.0.26",
+    user: "VM",
+    password: "1238dfash!3asd^7&2",
     database: "email_db",
 };
 

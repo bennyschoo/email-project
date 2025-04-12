@@ -5,7 +5,7 @@ const APIS = require("./src/routes/APIRequests.js");
 
 // Server parameters
 const port = 80;
-const host = "localhost";
+const host = "192.168.0.25";
 
 app.use("/", pages);
 app.use("/api", APIS);
