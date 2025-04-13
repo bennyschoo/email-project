@@ -6,13 +6,13 @@ failure.classList.add(["d-none"]);
 
 form.addEventListener("submit", (event)=>{
     event.preventDefault();
-    let email = document.getElementById('email');
+    let username = document.getElementById('username');
     let password =  document.getElementById('password');
     let data = {
-        "email":email.value,
+        "username":username.value,
         "password":password.value
     }
-    email.value = "";
+    username.value = "";
     password.value= "";
     data = JSON.stringify(data);
     login(data);

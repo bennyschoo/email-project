@@ -10,14 +10,16 @@
 <main class="container-md my-4 d-flex justify-content-center">
     <form class="d-flex flex-column" id="login-form">
          <div class="mb-3">
-            <label for="" class="form-label">Email</label>
+            <label for="" class="form-label">Username</label>
             <input 
-            type="email" 
+            type="text"
+            pattern="^[a-zA-Z0-9\-_]{4,}$" 
+            title="Please enter a valid username with at least 4 characters (letters, numbers, _, and - only)"
             class="form-control text-dark" 
-            name="email" 
-            id="email" 
-            aria-describedby="emailHelpId" 
-            placeholder="Enter Email" 
+            name="username" 
+            id="username" 
+            aria-describedby="usernameHelpId" 
+            placeholder="Enter username" 
             required
             />
          </div>

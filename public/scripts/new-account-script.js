@@ -6,7 +6,7 @@ failure.classList.add(["d-none"]);
 
 form.addEventListener("submit", (event)=>{
     event.preventDefault();
-    const email = document.getElementById('email');
+    const username = document.getElementById('username');
     let password1 =  document.getElementById('password');
     let password2 = document.getElementById('password2');
 
@@ -16,10 +16,10 @@ form.addEventListener("submit", (event)=>{
     }
     
     let data = {
-        "email":email.value,
+        "username":username.value,
         "password":password1.value
     }
-    email.value="";
+    username.value="";
     password1.value="";
     password2.value="";
     data = JSON.stringify(data);

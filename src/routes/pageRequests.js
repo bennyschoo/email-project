@@ -9,7 +9,7 @@ const loginhtml = fs.readFileSync("./public/templates/login.html");
 const inboxhtml = fs.readFileSync("./public/templates/inbox.html");
 const newmailhtml = fs.readFileSync("./public/templates/new_mail.html");
 const newaccounthtml = fs.readFileSync("./public/templates/new_account.html");
-const pageNotFoundhtml = fs.readFileSync("./public/templates/notfound.html");
+const pageNotFoundhtml = fs.readFileSync("./public/templates/notFound.html");
 
 router.use('/public',express.static('public'));
 router.use(session({
@@ -60,7 +60,7 @@ router.get("/inbox",(req,res)=>{
         return;
     }
     let outputhtml = headerhtml + inboxhtml + footerhtml;
-    outputhtml = outputhtml.replace("!--HELLO--!",`Hello, ${req.session.email}`)
+    outputhtml = outputhtml.replace("!--HELLO--!",`Hello, ${req.session.username}`)
     res.writeHead(200,{"Content-type":"text/html"});
     res.end(outputhtml)
 });

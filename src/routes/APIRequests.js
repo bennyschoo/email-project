@@ -16,33 +16,40 @@ router.use(session({
 
 
 router.post("/request_login", [
-    check('email').escape().trim().isEmail().normalizeEmail(),
+    check('username').escape().trim(),
     check('password').trim().escape().isString()
 ], (req,res)=>{
     req.on("data", (chunk)=>{
         let data = JSON.parse(chunk.toString());
-        let email = data.email;
+        let username = data.username;
         let password = data.password;
-        let query = "select uid, password, salt from login where email = ?;"
-        db.query(query, [email], (err,results,fields)=>{
+        let query = "select uid, password, salt from login where username = ?;"
+        db.query(query, [username], (err,results,fields)=>{
             if(err) throw err;
             if(results.length == 0){
                 res.writeHead(404,{"Content-Type":"application/json"});
-                res.end(JSON.stringify({"error":"Email not found"}));
+                res.end(JSON.stringify({"error":"User or password incorrect"}));
                 return;
             }
 
             let salt = results[0].salt;
-            let passMatch = results[0].password == crypto.hash(digest,password+salt).toString("base64");
+            let hash = crypto.createHash(digest);
+            hash.update(password+salt);
+            let passMatch = results[0].password == hash.digest("base64");
             if(passMatch){
                 req.session.loggedin = true;
                 req.session.uid = results[0].uid;
-                req.session.email = email;
+                req.session.username = username;
                 res.writeHead(200,{
                     "Content-Type":"application/json",
                     "Set-Cookie":`last_login=${new Date().toLocaleString()}; path=/;`
                 });
                 res.end(JSON.stringify({"success":"Login Successful"}));
+            }
+            else{
+                res.writeHead(401,{"Content-Type":"application/json"});
+                res.end(JSON.stringify({"error":"User or password incorrect"}));
+                return;
             }
         });
     })
@@ -50,27 +57,29 @@ router.post("/request_login", [
 
 
 router.post("/new_account", [
-    check('email').escape().trim().isEmail().normalizeEmail(),
+    check('username').escape().trim(),
     check('password').trim().escape().isString()
 ], (req,res)=>{
     req.on("data", (chunk)=>{
         let data = JSON.parse(chunk.toString());
-        let email = data.email;
+        let username = data.username;
         let password = data.password;
-        let query = "select uid from login where email = ?;"
-        db.query(query, [email], (err,results,fields)=>{
+        let query = "select uid from login where username = ?;"
+        db.query(query, [username], (err,results,fields)=>{
             if(err) throw err;
             if(results.length >0){
                 res.writeHead(404,{"Content-Type":"application/json"});
-                res.end(JSON.stringify({"error":"Email already exists"}));
+                res.end(JSON.stringify({"error":"User already exists"}));
                 return;
             }
 
             let salt = crypto.randomBytes(64).toString("base64");
-            let hash = crypto.hash(digest,password+salt).toString("base64");
-            let uid = crypto.hash("SHA1", email+password); // create unique Ids for each user
-            query = "insert into login (uid,email,password,salt) values (?,?,?,?);"
-            db.query(query,[uid,email,hash,salt], (err,results,fields)=>{
+            let hash = crypto.createHash(digest);
+            let uid= crypto.createHash("SHA1");
+            hash.update(password+salt);
+            uid.update(username+password); // create unique Ids for each user
+            query = "insert into login (uid,username,password,salt) values (?,?,?,?);"
+            db.query(query,[uid.digest("base64"),username,hash.digest("base64"),salt], (err,results,fields)=>{
                 if(err) throw err;
                 res.writeHead(200,{"Content-Type":"application/json"});
                 res.end(JSON.stringify({"success":"Account Created"}));
@@ -94,12 +103,12 @@ router.post("/retrieve", [
             let data = JSON.parse(chunk.toString());
             let time = data.time;
             let incoming = data.type == "incoming";
-            let query = "select E.subject,E.body,E.sent,L.email from emails E inner join login L on E.rid = L.uid where E.sid = ? AND E.sent > ? order by sent desc;"
+            let query = "select E.subject,E.body,E.sent,L.username from messages E inner join login L on E.rid = L.uid where E.sid = ? AND E.sent > ? order by sent desc;"
             if(time == "0"){
                 time = "0000-00-00 00:00:00";
             }
             if(incoming){
-                query = "select E.subject,E.body,E.sent,L.email from emails E inner join login L on E.sid = L.uid where E.rid = ? AND E.sent > ? order by sent desc;"
+                query = "select E.subject,E.body,E.sent,L.username from messages E inner join login L on E.sid = L.uid where E.rid = ? AND E.sent > ? order by sent desc;"
             }
             db.query(query, [req.session.uid,time],(err,results,fields)=>{
                 if(err) throw err;
@@ -114,7 +123,7 @@ router.post("/retrieve", [
 });
 
 router.post("/sendmail", [
-    check("recipient").escape().trim().isEmail().normalizeEmail(),
+    check("recipient").escape().trim(),
     check("subject").escape().trim().isString(),
     check("body").escape().trim().isString()
 ], (req,res)=>{
@@ -123,7 +132,7 @@ router.post("/sendmail", [
         let recipient = data.recipient;
         let subject = data.subject;
         let body = data.body;
-        let query = "select uid from login where email = ?;"
+        let query = "select uid from login where username = ?;"
         db.query(query, [recipient], (err,results,fields)=>{
             if(err) throw err;
             if(results.length == 0){
@@ -134,11 +143,11 @@ router.post("/sendmail", [
             
             let rid = results[0].uid;
             let sid = req.session.uid;
-            query = "insert into emails (sid,rid,subject,body,sent) values (?,?,?,?,NOW());"
+            query = "insert into messages (sid,rid,subject,body,sent) values (?,?,?,?,NOW());"
             db.query(query,[sid,rid,subject,body],(err,results,fields)=>{
                 if(err) throw err;
                 res.writeHead(200,{"Content-Type":"application/json"});
-                res.end(JSON.stringify({"success":"Email Sent"}));
+                res.end(JSON.stringify({"success":"username Sent"}));
             });
         });
     });

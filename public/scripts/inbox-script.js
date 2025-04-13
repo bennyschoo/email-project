@@ -59,7 +59,7 @@ function createMailItem(data, fromTo){
 
                 let sender = document.createElement("h5");
                 sender.classList="text-center my-auto";
-                sender.textContent = fromTo + ": " + data.email;
+                sender.textContent = fromTo + ": " + data.username;
 
                 let datetime = document.createElement("h6");
                 datetime.classList = "text-center my-auto";
