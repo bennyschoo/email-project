@@ -1,10 +1,7 @@
 # Assignment $: Email Website - Node.js using Express.js
 
 __Name:__ Ben Schoonhoven
-__Banner:__ B00954933
 __Date:__ March 10th, 2025
-__Git URL:__ https://git.cs.dal.ca/courses/2025-winter/csci-2170/assignments/a4/schoonhove.git
-
 
 ## Application Name and description
 
