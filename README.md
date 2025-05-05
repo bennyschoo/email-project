@@ -1,7 +1,4 @@
-# Assignment $: Email Website - Node.js using Express.js
-
-__Name:__ Ben Schoonhoven
-__Date:__ March 10th, 2025
+ # Email Website - Node.js using Express.js
 
 ## Application Name and description
 
